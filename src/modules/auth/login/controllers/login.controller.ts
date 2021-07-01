@@ -10,7 +10,7 @@ export class LoginController {
   constructor(private readonly loginUsecase: LoginUsecase) {}
 
   @HttpCode(200)
-  @Post('login')
+  @Post()
   async createUser(@Body() body: SignInUserDTO, @Res() res: Response) {
     const result = await this.loginUsecase.execute(body);
 

@@ -9,7 +9,7 @@ import { CreateUserUsecase } from '../usecases/createUser.usecase';
 export class SignUpController {
   constructor(private readonly createUserUsecase: CreateUserUsecase) {}
 
-  @Post('create')
+  @Post()
   async createUser(@Body() body: CreateUserDTO, @Res() res: Response) {
     const result = await this.createUserUsecase.execute(body);
     if (result instanceof ErrorMessage) {
