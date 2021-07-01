@@ -5,15 +5,16 @@ import { ErrorMessage } from 'src/shared/errors/errorMessage';
 import { UserDocument } from 'src/shared/models/user.model';
 import { SignInUserDTO } from '../dtos/user.dto';
 import { compare } from 'bcrypt';
-import { UserEntity } from 'src/shared/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class LoginService {
   constructor(
     @InjectModel('UserModel') private userModel: Model<UserDocument>,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async singIn(userDTO: SignInUserDTO): Promise<UserEntity | ErrorMessage> {
+  async singIn(userDTO: SignInUserDTO): Promise<string | ErrorMessage> {
     try {
       const user = await this.userModel.findOne({
         email: userDTO.email,
@@ -26,13 +27,13 @@ export class LoginService {
       const isMatchedPassword = await compare(userDTO.password, user.password);
 
       if (isMatchedPassword) {
-        const userEntity = new UserEntity(
-          user._id,
-          user.username,
-          user.email,
-          user.photoUrl,
-        );
-        return userEntity;
+        const payload = {
+          username: user.username,
+          userId: user._id,
+          email: user.email,
+        };
+        const accessToken = this.jwtService.sign(payload);
+        return accessToken;
       } else {
         return new ErrorMessage('Invalid password');
       }

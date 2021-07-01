@@ -8,7 +8,7 @@ import { LoginService } from '../services/login.service';
 export class LoginUsecase {
   constructor(private readonly loginService: LoginService) {}
 
-  async execute(userDTO: SignInUserDTO): Promise<UserEntity | ErrorMessage> {
+  async execute(userDTO: SignInUserDTO): Promise<string | ErrorMessage> {
     if (!userDTO.email || !userDTO.password) {
       return new ErrorMessage('email and password are required fields');
     }
