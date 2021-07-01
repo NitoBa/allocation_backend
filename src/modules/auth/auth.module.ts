@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/shared/models/user.model';
-import { SignUpController } from './createAccount/controllers/signup.controller';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { CreateAccountService } from './createAccount/services/createAccount.service';
 import { CreateUserUsecase } from './createAccount/usecases/createUser.usecase';
-import { LoginController } from './login/controllers/login.controller';
 import { LoginService } from './login/services/login.service';
 import { LoginUsecase } from './login/usecases/login.usecase';
 
@@ -12,7 +12,7 @@ import { LoginUsecase } from './login/usecases/login.usecase';
   imports: [
     MongooseModule.forFeature([{ name: 'UserModel', schema: UserSchema }]),
   ],
-  controllers: [SignUpController, LoginController],
+  controllers: [AuthController],
   providers: [
     CreateUserUsecase,
     LoginUsecase,
