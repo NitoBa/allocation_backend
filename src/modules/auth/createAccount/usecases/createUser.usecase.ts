@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { hash } from 'bcrypt';
 import { validateEmail } from 'src/shared/constants/app.constants';
 import { ErrorMessage } from 'src/shared/errors/errorMessage';
+import { User } from 'src/shared/models/user.model';
 import { CreateUserDTO } from '../dtos/createUser.dto';
-import { User } from '../models/user.model';
 import { CreateAccountService } from '../services/createAccount.service';
 
 @Injectable()

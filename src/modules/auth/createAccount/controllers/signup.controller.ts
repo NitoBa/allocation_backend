@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ErrorMessage } from 'src/shared/errors/errorMessage';
-import { CreateUserDTO } from '../createAccount/dtos/createUser.dto';
-import { CreateUserUsecase } from '../createAccount/usecases/createUser.usecase';
+import { CreateUserDTO } from '../dtos/createUser.dto';
+import { CreateUserUsecase } from '../usecases/createUser.usecase';
 
-@Controller('auth')
-export class AuthController {
+@Controller('auth/signup')
+export class SignUpController {
   constructor(private readonly createUserUsecase: CreateUserUsecase) {}
 
   @Post('create')
