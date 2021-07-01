@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ErrorMessage } from 'src/shared/errors/errorMessage';
 import { SignInUserDTO } from '../dtos/user.dto';
@@ -9,6 +9,7 @@ import { LoginUsecase } from '../usecases/login.usecase';
 export class LoginController {
   constructor(private readonly loginUsecase: LoginUsecase) {}
 
+  @HttpCode(200)
   @Post('login')
   async createUser(@Body() body: SignInUserDTO, @Res() res: Response) {
     const result = await this.loginUsecase.execute(body);
