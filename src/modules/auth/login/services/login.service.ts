@@ -14,26 +14,31 @@ export class LoginService {
   ) {}
 
   async singIn(userDTO: SignInUserDTO): Promise<UserEntity | ErrorMessage> {
-    const user = await this.userModel.findOne({
-      email: userDTO.email,
-    });
+    try {
+      const user = await this.userModel.findOne({
+        email: userDTO.email,
+      });
 
-    if (!user) {
-      return new ErrorMessage('User not registered');
-    }
+      if (!user) {
+        return new ErrorMessage('User not registered');
+      }
 
-    const isMatchedPassword = await compare(userDTO.password, user.password);
+      const isMatchedPassword = await compare(userDTO.password, user.password);
 
-    if (isMatchedPassword) {
-      const userEntity = new UserEntity(
-        user._id,
-        user.username,
-        user.email,
-        user.photoUrl,
-      );
-      return userEntity;
-    } else {
-      return new ErrorMessage('Invalid password');
+      if (isMatchedPassword) {
+        const userEntity = new UserEntity(
+          user._id,
+          user.username,
+          user.email,
+          user.photoUrl,
+        );
+        return userEntity;
+      } else {
+        return new ErrorMessage('Invalid password');
+      }
+    } catch (error) {
+      console.log(error);
+      return new ErrorMessage('An error happened with server, try again');
     }
   }
 }

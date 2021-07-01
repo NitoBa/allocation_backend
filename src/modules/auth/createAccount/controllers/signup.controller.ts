@@ -17,6 +17,6 @@ export class SignUpController {
         .status(400)
         .json({ message: (result as ErrorMessage).message });
     }
-    return res.json(result);
+    return res.json({ message: result });
   }
 }

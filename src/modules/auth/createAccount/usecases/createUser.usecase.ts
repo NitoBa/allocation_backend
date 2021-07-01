@@ -10,7 +10,7 @@ import { CreateAccountService } from '../services/createAccount.service';
 export class CreateUserUsecase {
   constructor(private readonly createAccountService: CreateAccountService) {}
 
-  async execute(createUserDTO: CreateUserDTO): Promise<User | ErrorMessage> {
+  async execute(createUserDTO: CreateUserDTO): Promise<string | ErrorMessage> {
     if (
       !createUserDTO.email ||
       !createUserDTO.password ||
