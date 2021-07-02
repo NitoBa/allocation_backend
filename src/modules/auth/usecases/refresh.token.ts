@@ -11,9 +11,8 @@ export class RefreshTokenUsecase {
       return new ErrorMessage('Refresh token is required field');
     }
 
-    const isValidRefreshToken = await this.authService.validateRefreshToken(
-      refreshToken,
-    );
+    const isValidRefreshToken =
+      this.authService.validateRefreshToken(refreshToken);
 
     if (!isValidRefreshToken) {
       console.log(isValidRefreshToken);

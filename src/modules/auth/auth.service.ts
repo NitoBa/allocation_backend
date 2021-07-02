@@ -25,9 +25,9 @@ export class AuthService {
     return refreshToken;
   }
 
-  async validateRefreshToken(refreshToken: string): Promise<boolean> {
+  validateRefreshToken(refreshToken: string): boolean {
     try {
-      await this.jwtService.verify(refreshToken, {
+      this.jwtService.verify(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
       return true;
