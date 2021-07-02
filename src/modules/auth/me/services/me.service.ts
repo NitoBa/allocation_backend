@@ -4,17 +4,20 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ErrorMessage } from 'src/shared/errors/errorMessage';
 import { UserEntity } from 'src/shared/entities/user.entity';
+import { AuthService } from '../../auth.service';
 
 @Injectable()
 export class MeService {
   constructor(
     @InjectModel('UserModel') private userModel: Model<UserDocument>,
+    private readonly authService: AuthService,
   ) {}
 
-  async getUserInfos(id: string): Promise<UserEntity | ErrorMessage> {
+  async getUserInfos(accessToken: string): Promise<UserEntity | ErrorMessage> {
     try {
+      const userDatas = this.authService.extractDataOfToken(accessToken);
       const user = await this.userModel.findOne({
-        _id: id,
+        _id: userDatas['userId'],
       });
 
       if (!user) {

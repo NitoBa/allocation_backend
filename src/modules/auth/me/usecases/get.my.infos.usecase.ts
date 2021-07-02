@@ -10,8 +10,7 @@ export class GetMyInfosUsecase {
   ) {}
 
   async execute(token: string) {
-    const [_, accessToken] = token.split(' ');
-    const decryptedToken = await this.jwtService.verify(accessToken);
-    return await this.meService.getUserInfos(decryptedToken.userId);
+    const accessToken = token.split(' ')[1];
+    return await this.meService.getUserInfos(accessToken);
   }
 }

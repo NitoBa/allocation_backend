@@ -5,16 +5,18 @@ import { ErrorMessage } from 'src/shared/errors/errorMessage';
 import { UserDocument } from 'src/shared/models/user.model';
 import { SignInUserDTO } from '../dtos/user.dto';
 import { compare } from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
+import { AuthService } from '../../auth.service';
 
 @Injectable()
 export class LoginService {
   constructor(
     @InjectModel('UserModel') private userModel: Model<UserDocument>,
-    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
   ) {}
 
-  async singIn(userDTO: SignInUserDTO): Promise<string | ErrorMessage> {
+  async singIn(
+    userDTO: SignInUserDTO,
+  ): Promise<Record<string, any> | ErrorMessage> {
     try {
       const user = await this.userModel.findOne({
         email: userDTO.email,
@@ -32,8 +34,9 @@ export class LoginService {
           userId: user._id,
           email: user.email,
         };
-        const accessToken = this.jwtService.sign(payload);
-        return accessToken;
+        const refreshToken = this.authService.generateRefreshToken(payload);
+        const accessToken = this.authService.generateToken(refreshToken);
+        return { accessToken, refreshToken };
       } else {
         return new ErrorMessage('Invalid password');
       }

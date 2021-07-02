@@ -12,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { MeService } from './me/services/me.service';
 import { GetMyInfosUsecase } from './me/usecases/get.my.infos.usecase';
+import { RefreshTokenUsecase } from './usecases/refresh.token';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { GetMyInfosUsecase } from './me/usecases/get.my.infos.usecase';
     MongooseModule.forFeature([{ name: 'UserModel', schema: UserSchema }]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '60s' },
     }),
   ],
   controllers: [AuthController],
@@ -28,8 +29,10 @@ import { GetMyInfosUsecase } from './me/usecases/get.my.infos.usecase';
     LoginUsecase,
     GetMyInfosUsecase,
     LoginService,
+    RefreshTokenUsecase,
     CreateAccountService,
     MeService,
+    AuthService,
     JwtStrategy,
   ],
 })

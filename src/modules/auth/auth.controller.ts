@@ -16,6 +16,7 @@ import { LoginUsecase } from './login/usecases/login.usecase';
 import { SignInUserDTO } from './login/dtos/user.dto';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { GetMyInfosUsecase } from './me/usecases/get.my.infos.usecase';
+import { RefreshTokenUsecase } from './usecases/refresh.token';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +24,7 @@ export class AuthController {
     private readonly createUserUsecase: CreateUserUsecase,
     private readonly loginUsecase: LoginUsecase,
     private readonly getMyInfosUsecase: GetMyInfosUsecase,
+    private readonly refreshTokenUsecase: RefreshTokenUsecase,
   ) {}
 
   @Post('singup')
@@ -46,7 +48,7 @@ export class AuthController {
         .status(400)
         .json({ message: (result as ErrorMessage).message });
     }
-    return res.json({ accessToken: result });
+    return res.json(result);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -61,5 +63,20 @@ export class AuthController {
         .json({ message: (result as ErrorMessage).message });
     }
     return res.json(result);
+  }
+
+  @Post('refresh-token')
+  async refreshToken(
+    @Body() body: { [key: string]: any },
+    @Res() res: Response,
+  ) {
+    const result = await this.refreshTokenUsecase.execute(body.refreshToken);
+
+    if (result instanceof ErrorMessage) {
+      return res
+        .status(400)
+        .json({ message: (result as ErrorMessage).message });
+    }
+    return res.json({ accessToken: result });
   }
 }
