@@ -4,4 +4,8 @@ const validateEmail = (email: string): boolean => {
   return re.test(email);
 };
 
-export { validateEmail };
+const allocationLog = 'AllocationLog';
+const summaryDayOffs = 'SummaryDayOffs';
+const summaryAllocation = 'SummaryAllocation';
+
+export { validateEmail, allocationLog, summaryAllocation, summaryDayOffs };

@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AllocationModule } from './modules/allocations/allocations.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
       useUnifiedTopology: true,
     }),
     AuthModule,
+    AllocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
